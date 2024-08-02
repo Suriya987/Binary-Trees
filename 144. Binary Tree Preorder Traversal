@@ -12,6 +12,11 @@ Example 3:
 Input: root = [1]
 Output: [1]
 
+Approach : Recursive and iterative available 
+
+
+//Recursive 
+
 Time complexity : O(N)
 Space complexity : O(N)
 
@@ -32,6 +37,30 @@ public:     // root->left->right
     vector<int> preorderTraversal(TreeNode* root) {
          vector<int>res;
          return findTree(root,res);
+    }
+};
+
+//Iterative
+
+class Solution {
+public:     // root->left->right
+     vector<int> preorderTraversal(TreeNode* root) {
+         vector<int>res;
+           if(root==NULL)  return res;
+           stack<TreeNode*>st;
+           st.push(root);
+
+           while(!st.empty())
+           {
+              TreeNode* temp=st.top();
+              st.pop();
+              if(temp->right!=NULL)  st.push(temp->right);
+              if(temp->left!=NULL)  st.push(temp->left);
+
+              res.push_back(temp->val);
+           }
+
+           return res;
     }
 };
  
