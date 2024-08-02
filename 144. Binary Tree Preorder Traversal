@@ -1,0 +1,37 @@
+Given the root of a binary tree, return the preorder traversal of its nodes' values.
+
+Example 1:
+Input: root = [1,null,2,3]
+Output: [1,2,3]
+
+Example 2:
+Input: root = []
+Output: []
+
+Example 3:
+Input: root = [1]
+Output: [1]
+
+Time complexity : O(N)
+Space complexity : O(N)
+
+class Solution {
+public:     // root->left->right
+    vector<int> findTree(TreeNode* root,vector<int>&res)
+    {
+        //base  case
+          if(root==NULL)
+            return res;
+         
+         res.push_back(root->val);
+         findTree(root->left,res);
+         findTree(root->right,res);
+
+         return res;
+    }
+    vector<int> preorderTraversal(TreeNode* root) {
+         vector<int>res;
+         return findTree(root,res);
+    }
+};
+ 
