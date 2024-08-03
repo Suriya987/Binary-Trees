@@ -39,3 +39,46 @@ public:
           return helper(curr,res);
     }
 };
+
+
+Approach : using 2 stack
+
+Time complexity : O(N)
+Space complexity : O(2N)
+
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+           stack<TreeNode*>st1;
+           stack<int>st2;
+
+          vector<int>res;
+          
+          if(root==NULL)  return res;
+           st1.push(root);
+
+           while(true)
+           {
+            root=st1.top();
+            st2.push(root->val);
+            st1.pop();
+                    if(root->left!=NULL) 
+                    st1.push(root->left);
+                    if(root->right!=NULL)
+                    st1.push(root->right);
+            if(st1.empty()==true)
+              break;
+           }
+    
+           while(st2.empty()==false)
+           {
+
+             res.push_back(st2.top());
+             st2.pop();
+           }
+
+           return res;
+    }
+};
+
+
