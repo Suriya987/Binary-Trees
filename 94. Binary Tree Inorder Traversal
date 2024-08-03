@@ -1,0 +1,38 @@
+Given the root of a binary tree, return the inorder traversal of its nodes' values.
+
+Example 1:
+Input: root = [1,null,2,3]
+Output: [1,3,2]
+
+Example 2:
+Input: root = []
+Output: []
+
+Example 3:
+Input: root = [1]
+Output: [1]
+
+
+Approach : Recursive 
+
+Time complexity : O(N)  -> we accessign everyNode
+Space complexity : O(N)  -> at worst case we  nodes connected in the vertical we have  recursiver stack space of length of the tree.
+
+class Solution {
+public:
+    vector<int> helper(TreeNode* root,vector<int>&res)
+    {
+        //base case
+          if(root==NULL)  return res;
+
+          helper(root->left,res);
+          res.push_back(root->val);
+          helper(root->right,res);
+
+          return res;
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int>ans;
+          return helper(root,ans);
+    }
+};
