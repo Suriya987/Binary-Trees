@@ -1,0 +1,136 @@
+[coding ninjas]
+
+You have been given a Binary Tree of 'N'
+
+nodes, where the nodes have integer values.
+
+Your task is to return the ln-Order, Pre-Order, and Post-Order traversals of the given binary tree.
+
+
+The Inorder traversal will be [5, 3, 2, 1, 7, 4, 6].
+The Preorder traversal will be [1, 3, 5, 2, 4, 7, 6].
+The Postorder traversal will be [5, 2, 3, 7, 6, 4, 1].
+
+
+Sample Input 1 :
+1 2 3 -1 -1 -1  6 -1 -1
+Sample Output 1 :
+2 1 3 6 
+1 2 3 6 
+2 6 3 1
+
+Sample Input 2 :
+1 2 4 5 3 -1 -1 -1 -1 -1 -1
+Sample Output 2 :
+5 2 3 1 4 
+1 2 5 3 4 
+5 3 2 4 1
+
+Approach :  Recursive   [ But time limit exceeded ]
+
+Time Complexity : O(3N)
+Space complexity : O(3N)
+
+#include<bits/stdc++.h>
+vector<int> inOrder(TreeNode *root,vector<int>&temp,vector<vector<int>>&trees)
+{
+     if(root==NULL)  return temp ;
+
+     inOrder(root->left,temp,trees);
+   temp.push_back(root->data);
+     inOrder(root->right,temp,trees);
+
+      return temp;
+}
+vector<int> postOrder(TreeNode *root,vector<int>&temp,vector<vector<int>>&trees)
+{
+     if(root==NULL)  return temp;
+
+     postOrder(root->left,temp,trees);
+     postOrder(root->right,temp,trees);
+     temp.push_back(root->data);
+
+      return temp;
+}
+vector<int> preOder(TreeNode *root,vector<int>&temp,vector<vector<int>>&trees)
+{
+    if(root==NULL)  return temp;
+
+    temp.push_back(root->data);
+    preOder(root->left,temp,trees);
+    preOder(root->right,temp,trees);
+
+    return temp;
+}
+vector<vector<int>> getTreeTraversal(TreeNode *root)
+{
+    vector<vector<int>> trees;
+    vector<int>temp;
+
+      trees.push_back(inOrder(root,temp,trees)); 
+     temp.clear();    
+       trees.push_back(preOder(root,temp,trees));
+        temp.clear();
+        trees.push_back(postOrder(root,temp,trees));
+       return  trees;
+}
+
+Approach : Iterative single traversal
+
+Time complexity : O(3N)  why ? becoz we accessing a particular node in 3 times like ==1,==2,==3  got it ?
+Space complexity : O(3N)  for storing 3 vectors in,pre,post
+
+#include<bits/stdc++.h>
+vector<vector<int>> getTreeTraversal(TreeNode *root)
+{
+  vector<vector<int>>res;
+
+       if(root==NULL)  return res;
+     vector<int>preOrder;
+     vector<int>inOrder;
+     vector<int>postOrder;
+
+     stack<pair<TreeNode*,int>>st;
+     st.push({root, 1});
+
+     while(!st.empty())
+     {
+       auto it=st.top();
+       st.pop();
+
+         if(it.second==1)  //preOrder
+         {
+             preOrder.push_back(it.first->data);
+             it.second++;
+             st.push(it);
+              //add the left value if it is
+              if(it.first->left!=NULL)
+              {
+                  st.push({it.first->left,1});
+              }
+         }
+         else if(it.second==2)  //Inorder
+         {
+              inOrder.push_back(it.first->data);
+              it.second++;
+                st.push(it);
+              //push the right node if it has
+              if(it.first->right!=NULL)
+              {
+                 st.push({it.first->right,1});
+              }
+         }
+         else
+         {
+             postOrder.push_back(it.first->data);
+         }
+
+     }
+    /// inorder.push_back(inOrder.size());
+       //    res.push_back(inOrder);
+     res.push_back(inOrder);
+     res.push_back(preOrder);
+     res.push_back(postOrder);
+
+     return res;
+}
