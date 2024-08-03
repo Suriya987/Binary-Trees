@@ -81,4 +81,58 @@ public:
     }
 };
 
+Approach : Using 1 stack
+
+Time complexity : O(2N)   why 2N becoz if we are having fully right nodes and inside the loop {while} it gets start from last to first node in one traversal so.
+space complexity : O(N)
+
+ class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+            
+            vector<int> res;
+            stack<TreeNode*> st;
+         if(root==NULL)  return res;
+            TreeNode* node=root;
+            TreeNode* temp;
+                        
+            while(!st.empty() || node!=NULL)
+            {
+                 if(node!=NULL)
+                 {
+                    st.push(node); 
+                    node=node->left;
+                 }
+                 else
+                 {
+                      temp=st.top();
+                      temp=temp->right;
+                    //  temp=temp->right;
+
+                      if(temp==NULL)
+                      {
+                           temp=st.top();
+                           st.pop();
+                           res.push_back(temp->val);
+    
+                           while( !st.empty() && temp==st.top()->right)
+                           {
+                              temp=st.top();
+                              st.pop();
+                              res.push_back(temp->val);
+                           }
+                           //break;
+                      }
+                      else
+                      {
+                        node=temp;
+                      }
+                 }
+            }
+            return res;
+
+    }
+};
+
+
 
