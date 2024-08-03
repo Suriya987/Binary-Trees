@@ -12,6 +12,40 @@ Example 3:
 Input: root = [1]
 Output: [1]
 
+Approach : Iterative 
+
+Time complexity : O(N)  -> we accessign everyNode
+Space complexity : O(N)  -> at worst case we  nodes connected in the vertical we are end up having length of N nodes 
+
+class Solution {
+public:
+   vector<int> inorderTraversal(TreeNode* root) {
+        vector<int>ans;
+           
+           TreeNode* node=root;
+           stack<TreeNode*>st;
+           
+           while(true)
+           {
+            if(node!=NULL)
+            {
+                st.push(node);
+                node=node->left;
+            }
+            else
+            {
+                if(st.empty() == true)  break;
+
+                node=st.top();
+                ans.push_back(node->val);
+                st.pop();
+                node=node->right;
+            }
+           }
+           return ans;
+    }
+};
+
 
 Approach : Recursive 
 
