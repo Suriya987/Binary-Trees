@@ -1,0 +1,47 @@
+Given a binary tree, determine if it is height-balanced
+
+Example : 1
+Input: root = [3,9,20,null,null,15,7]
+Output: true
+
+Example 2:
+Input: root = [1,2,2,3,3,null,null,4,4]
+Output: false
+
+Example 3:
+Input: root = []
+Output: true
+
+naive approach :
+     get the length of the left and right binary tree and compare the absolute diff 
+  Do these calculations for every nodes 
+Time complexity : O(N)*O(N)  -> every node we call a recursive for finding right and left calls 
+space complexity : Auxillary space O(N)*O(N)
+Approach : recursive (using linear time)
+
+Time complexity : O(N)
+space complexity : O(N)
+
+class Solution {
+public:
+    int helper(TreeNode* root)
+    {
+        //base case
+          if(root==NULL)  return 0;
+
+          int left=helper(root->left);
+          if(left==-1) return -1;
+          int right=helper(root->right);
+           if(right==-1)  return -1;
+
+          if(abs(right-left)>1)  return -1;
+
+          return max(right,left)+1;
+    }
+    bool isBalanced(TreeNode* root) {
+       return helper(root)!=-1; 
+    }
+};
+
+
+
