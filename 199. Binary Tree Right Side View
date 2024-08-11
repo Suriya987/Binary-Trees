@@ -1,0 +1,57 @@
+Given the root of a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+Example 1 :
+
+Input: root = [1,2,3,null,5,null,4]
+Output: [1,3,4]
+Example 2:
+
+Input: root = [1,null,3]
+Output: [1,3]
+Example 3:
+
+Input: root = []
+Output: []
+
+Approach : Level order traversal
+
+Time complexity : O(N)
+Space complexity : O(N)
+
+class Solution {
+public:
+       vector<int> rightSideView(TreeNode* root) {
+        vector<int> res;
+        if(root==NULL)  return res;
+
+        queue<pair<TreeNode*,int>>q;
+        map<int,int>mp;
+
+        q.push({root,0});
+        while(!q.empty())
+        {
+            auto it=q.front();
+            q.pop();
+            TreeNode* curr=it.first;
+            int level=it.second;
+
+            mp[level]=curr->val;
+
+            if(curr->left!=NULL)
+            {
+                q.push({curr->left,level+1});
+            }
+            if(curr->right!=NULL)
+            {
+                q.push({curr->right,level+1});
+            }
+        }
+
+        for(auto it:mp)
+        {
+            res.push_back(it.second);
+        }
+
+        return res;
+    }
+};
