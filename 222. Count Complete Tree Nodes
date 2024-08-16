@@ -1,0 +1,105 @@
+Given the root of a complete binary tree, return the number of the nodes in the tree.
+
+According to Wikipedia, every level, except possibly the last, is completely filled in a complete binary tree, and all nodes in the last
+level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.
+
+Design an algorithm that runs in less than O(n) time complexity.
+
+Approach : optimised approach
+
+Time complexity : O(LogN)^2   evry time when we make call  for finding the left node it run at worst case if make this kind of calls for evry node it might take O(logN*LogN)
+Space complexity : O(LogN)  ->height of the tree
+
+class Solution {
+public:
+       int findLeftNodes(TreeNode* root)
+       {
+             int cnt=0;
+
+             while(root!=NULL)
+             {
+                cnt++;
+                root=root->left;
+             }
+        return cnt;
+          
+       }
+        int findRightNodes(TreeNode* root)
+       {
+             int cnt=0;
+
+             while(root!=NULL)
+             {
+                cnt++;
+                root=root->right;
+             }
+        return cnt;
+          
+       }
+       int countNodes(TreeNode* root) {
+           
+              if(root==NULL)  return 0;
+                
+
+            int left=findLeftNodes(root);
+           int right=findRightNodes(root);
+
+           if(left==right)  return (1<<left)-1;
+
+            return 1+countNodes(root->left)+countNodes(root->right);
+    }
+};
+
+
+
+approach :  recursive
+
+Time complexity : O(N)
+Space complexity : O(N) stack space
+
+class Solution {
+public:
+    int findTotalNodes(TreeNode* root)
+    {
+        if(root==NULL)
+          return 0;
+
+         int left=findTotalNodes(root->left);
+         int right=findTotalNodes(root->right);
+             //current node and their right and left sum
+         return 1+(left+right);
+    }
+    int countNodes(TreeNode* root) {
+         return findTotalNodes(root);
+    }
+};
+
+approach : iterative 
+
+Time complexity : O(N)
+Space complexity : O(N)
+
+class Solution {
+public:
+       int countNodes(TreeNode* root) {
+         queue<TreeNode*>nodes;
+        if(root==NULL)  return 0;
+         nodes.push(root);
+         int totalNodes=0;
+         while(!nodes.empty())
+         {
+              totalNodes+=nodes.size();
+              int size=nodes.size();
+              for(int i=0;i<size;i++)
+              {
+                TreeNode* currNode=nodes.front();
+                nodes.pop();
+                if(currNode->left!=NULL)
+                   nodes.push(currNode->left);
+                if(currNode->right!=NULL)
+                   nodes.push(currNode->right);
+              }
+         }
+         return totalNodes;
+    }
+};
