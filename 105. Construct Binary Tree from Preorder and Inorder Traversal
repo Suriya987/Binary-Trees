@@ -1,0 +1,39 @@
+Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, 
+construct and return the binary tree.
+
+
+Time complexity : O(N)
+Space complexity : O(N) ->hash map  0(Height of the tree)  -> recursive stack space
+
+class Solution {
+public:
+    TreeNode* constructBinaryTree(vector<int>&preorder,int preStart,int preEnd,vector<int>&inorder,int inStart,int inEnd,unordered_map<int,int>&map)
+    {
+        //base case
+           if(preStart>preEnd || inStart>inEnd)  return NULL;
+
+           TreeNode* root=new TreeNode(preorder[preStart]);
+
+           int leftSubTree=map[preorder[preStart]] ;
+
+           int numsLeft=leftSubTree-inStart;
+
+           root->left=constructBinaryTree(preorder,preStart+1,preStart+numsLeft,inorder,inStart,leftSubTree-1,map);
+           root->right=constructBinaryTree(preorder,preStart+numsLeft+1,preEnd,inorder,map[preorder[preStart]]+1,inEnd,map);
+
+           return root;
+    }
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+          unordered_map<int,int>map;
+          int len=inorder.size();
+          for(int i=0;i<len;i++)
+          {
+            map[inorder[i]]=i;
+          }
+
+          TreeNode* root=constructBinaryTree(preorder,0,preorder.size()-1,inorder,0,len-1,map);
+
+          return root;
+    }
+};
