@@ -1,0 +1,56 @@
+Given the root of a binary tree, return the inorder traversal of its nodes' values.
+
+
+Approach : Morris apprach  ( threaded model )
+
+Time complexity : O(N)
+Space complexity : O(N) ->if we considered vector
+                   O(1) -> if we dont considered vector
+
+class Solution {
+public:
+   vector<int> inorderTraversal(TreeNode* root) {
+      
+       vector<int>inorder;
+       
+         if(root==NULL)
+           return inorder;
+
+          TreeNode* curr=root;
+
+          while(curr!=NULL)
+          {
+            //case 1
+              if(curr->left==NULL)
+              {
+                inorder.push_back(curr->val);
+                curr=curr->right;
+              }
+              else
+              {
+                //case 2
+                  TreeNode* newNode=curr->left;
+
+                  //check for whether it is already visited or not
+                  while(newNode->right && newNode->right!=curr)
+                  {     //1st option trying to make threaded connection 
+                        //2nd option if we already make threaded we have to stop
+                        newNode=newNode->right;
+                  }
+                    //make threaded connection to its root node
+                  if(newNode->right==NULL)
+                  {
+                    newNode->right=curr;
+                    curr=curr->left;
+                  }
+                  else  //if we already in the threaded cut that connection and for its right
+                  {
+                      newNode->right=NULL;
+                      inorder.push_back(curr->val);
+                      curr=curr->right;
+                  }
+              }
+          }
+          return inorder;
+    }
+};
