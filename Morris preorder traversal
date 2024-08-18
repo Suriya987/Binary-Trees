@@ -1,0 +1,47 @@
+Given the root of a binary tree, return the preorder traversal of its nodes' values.
+
+Approach : Morris  optimized 
+
+Time complexity : O(N)
+Space complexity : O(N) or O(1)
+
+class Solution {
+public:     // root->left->right
+     vector<int> preorderTraversal(TreeNode* root) {
+         
+         vector<int>preorder;
+
+         TreeNode* curr=root;
+
+         while(curr!=NULL)
+         {
+            if(curr->left==NULL)
+             {
+                preorder.push_back(curr->val);
+                curr=curr->right;
+             }
+             else
+             {
+                 TreeNode* newNode=curr->left;
+
+                 while(newNode->right && newNode->right!=curr)
+                 {
+                    newNode=newNode->right;
+                 }
+
+                 if(newNode->right==NULL)
+                 {
+                    newNode->right=curr;
+                    preorder.push_back(curr->val);
+                    curr=curr->left;
+                 }
+                 else
+                 {
+                    newNode->right=NULL;
+                    curr=curr->right;
+                 }
+             }
+         }
+         return preorder;
+    }
+};
