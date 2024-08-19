@@ -1,0 +1,70 @@
+Given the root of a binary tree, flatten the tree into a "linked list":
+
+The "linked list" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.
+The "linked list" should be in the same order as a pre-order traversal of the binary tree.
+
+
+Approach : by using loop 
+
+Time complexity : O(N)
+Space complexity : O(N) -> for using stack
+
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+          
+          if(root==NULL)
+           return;
+          stack<TreeNode*>st;
+          st.push(root);
+
+          while(!st.empty())
+          {
+            TreeNode* curr=st.top();
+            st.pop();
+
+            if(curr->right)
+            {
+                st.push(curr->right);
+            }
+            if(curr->left)
+            {
+                st.push(curr->left);
+            }
+
+            if(!st.empty())
+              curr->right=st.top();
+
+            curr->left=NULL;
+          }        
+    }
+};
+
+Approach : recursive 
+
+Time complexity : O(N)
+Space complexity : O(N)
+
+class Solution {
+public:
+    TreeNode* letsFlatten(TreeNode* root,TreeNode* &prev)
+    {
+        if(root==NULL)  return NULL;
+
+        letsFlatten(root->right,prev);
+        letsFlatten(root->left,prev);
+
+        root->right=prev;
+        root->left=NULL;
+
+        prev=root;
+
+        return prev;
+    }
+    void flatten(TreeNode* root) {
+          
+          TreeNode* prev=NULL;
+          root=letsFlatten(root,prev);
+          
+    }
+};
