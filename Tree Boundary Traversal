@@ -107,3 +107,84 @@ public:
         return res;
     }
 };
+
+
+redo Sln
+
+class Solution {
+  public:   //left
+    void leftnode(Node* leftroot, vector<int>&leftvec)
+    {
+        //base case
+          if(leftroot==NULL)  return;
+          
+          if(leftroot->left!=NULL || leftroot->right!=NULL)
+          leftvec.push_back(leftroot->data);
+          
+          if(leftroot->left!=NULL)
+          leftnode(leftroot->left,leftvec);
+          else
+          leftnode(leftroot->right,leftvec);
+          
+    }
+ public: //right
+   void right(Node* rightroot, vector<int>&rightvec)
+   {
+       //base case
+         if(rightroot==NULL)
+          return;
+          
+            if(rightroot->left!=NULL || rightroot->right!=NULL)
+            rightvec.push_back(rightroot->data);
+           
+           
+           if(rightroot->right!=NULL)
+              right(rightroot->right,rightvec);
+            else
+              right(rightroot->left,rightvec);
+         
+       
+           
+         
+   }
+  public: //bottom
+  void bottom(Node* root, vector<int>&ans)
+  {
+       if(root==NULL)  return ;
+       
+       if(root->left==NULL && root->right==NULL)
+        ans.push_back(root->data);
+        
+      bottom(root->left,ans);
+      bottom(root->right,ans);
+  }
+  public:
+    vector<int> boundaryTraversal(Node *root) {
+           //three ways left, bottom, right
+         vector<int>result;
+         vector<int>temp;
+         
+         if(root->left==NULL && root->right==NULL)
+           return {root->data};
+         //left
+         if(root->left!=NULL)
+         leftnode(root,result);
+         else 
+         result.push_back(root->data);
+         
+         bottom(root,result);
+         right(root->right,temp);
+         
+         reverse(temp.begin(),temp.end());
+          //int size=result.size();  //7 //6
+         //result[7]=100;
+         //result.push_back(result.size());
+      
+         for(int i=0;i<temp.size();i++)
+         //result[size++]=temp[i];
+           result.push_back(temp[i]);
+        
+         return result;
+           
+    }
+};
